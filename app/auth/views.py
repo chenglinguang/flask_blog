@@ -24,3 +24,10 @@ def logout():
     flash('您已经退出登陆.')
     return redirect(url_for('main.index'))
 
+#@auth.route('/publish')
+#@login_required
+#def publish():
+#    form=ArticleForm()
+#    if form.validate_on_submit():
+        
+

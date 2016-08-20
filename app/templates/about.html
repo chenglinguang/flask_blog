@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}印第安酋长资料信息{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <img class="img-rounded profile-thumbnail" src="static/qiuzhang.jpg">
+    <div class="profile-header">
+        <h1>印第安酋长个人信息</h1>
+        <p>
+            来自 <a href="http://map.baidu.com/?q=Beijing">Beijing</a>
+        </p>
+        <p>
+            软件工程师
+        </p>
+        <p>
+            爱好：编程.足球.游泳
+        </p>
+        <p>
+            当前时间: {{ current_time() }}
+        </p> 
+    </div>
+</div>
+{% endblock %}
+
+

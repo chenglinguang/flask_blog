@@ -9,6 +9,7 @@ class Config:
     
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess-it-out'
     SQLALCHEMY_TRACK_MODIFICATIONS = True 
+    FLASKY_POSTS_PER_PAGE = 5
     @staticmethod
     def init_app(app):
         pass

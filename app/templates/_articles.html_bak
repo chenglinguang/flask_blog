@@ -1,0 +1,32 @@
+<ul class="articles">
+    {% for article in articles %}
+    <li class="article">
+        <div class="article-head">
+            <h2>{{ article.title }}</h2>
+        </div>
+        <div class="article-thumbnail">
+            <a href="{{ url_for('.about') }}">
+                印第安酋长
+            </a>
+            <a href="{{ url_for('.article', id=article.id) }}">
+                <span class="label label-default">查看全文</span>
+            </a>
+        </div>
+        <div class="article-content">
+            <div class="article-date">{{ moment(article.timestamp).fromNow() }}</div>
+            <div class="article-body">
+                {% if article.body_html %}
+                    {{ article.body_html | safe }}
+                {% else %}
+                    {{ article.body }}
+                {% endif %}
+            </div>
+<!--
+            <div class="article-footer">
+            </div>
+-->
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+

@@ -1,0 +1,25 @@
+<ul class="articles">
+    {% for article in articles %}
+    <li class="article">
+        <div class="blog-post">
+             <h2 class="blog-post-title">{{ article.title }}</h2>
+             
+             <p class="blog-post-meta">
+                 <a href="/">首页</a>
+                 <a href="{{ url_for('.article', id=article.id) }}">查看全文</a>
+             </p>
+             <!--
+             <p class="article-body">
+             -->
+             <p>
+                 {% if article.body_html %}
+                     {{ article.body_html |safe }}
+                 {% else %}
+                     {{ article.body }}
+                 {% endif %} 
+             </p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+
