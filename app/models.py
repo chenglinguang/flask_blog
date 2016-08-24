@@ -12,7 +12,6 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
-    articles = db.relationship('Article', backref='author', lazy='dynamic')
 
     @property
     def password(self):
@@ -38,8 +37,7 @@ class Article(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     title=db.Column(db.String(64),index=True)
-    #item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    item_id = db.Column(db.Integer, db.ForeignKey('items.id'))
     body_html = db.Column(db.Text)
 
     @staticmethod
@@ -60,16 +58,16 @@ class Article(db.Model):
 
 db.event.listen(Article.body, 'set', Article.on_changed_body)
 
-#class Item(db.Model):
-#    __tablename__='items'
-#    id=db.Column(db.Integer, primary_key=True)
-#    tag=db.Column(db.String(64))
-#    posts = db.relationship('Article', backref='item')
+class Item(db.Model):
+    __tablename__='items'
+    id=db.Column(db.Integer, primary_key=True)
+    tag=db.Column(db.String(64))
+    articles = db.relationship('Article', backref='item')
 
-#class Like(db.Model):
-#    __tablename__='likes'
-#    id=db.Column(db.Integer, primary_key=True)
-#    like_sum=db.Column(db.Integer)
+class Like(db.Model):
+    __tablename__='likes'
+    id=db.Column(db.Integer, primary_key=True)
+    like_sum=db.Column(db.Integer)
 
 
 

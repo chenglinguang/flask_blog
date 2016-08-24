@@ -1,7 +1,7 @@
 from . import main
 from flask import render_template,current_app,request,redirect,url_for,request,current_app
 from flask_login import login_required,current_user
-from ..models import User, Article
+from ..models import User, Article,Item
 from .forms import ArticleForm
 import time 
 from .. import db
@@ -22,18 +22,27 @@ def about():
 def publish():
     form=ArticleForm()
     if form.validate_on_submit():
-        #tag = Item(tag=form.tag.data)
-        article=Article(body=form.body.data,title=form.title.data,author=current_user._get_current_object())
+        tag = Item(tag=form.tag.data)
+        article=Article(body=form.body.data,title=form.title.data,item=tag)
         db.session.add(article)
         db.session.commit()
         return redirect(url_for('.index'))
     return render_template('publish.html',form=form)
 
-@main.route('/post/<int:id>')
+@main.route('/article/<int:id>')
 def article(id):
     article=Article.query.get_or_404(id)
     return render_template('article.html', articles=[article])
 
+@main.route('/item/<tag>',methods=['GET','POST'])
+def item(tag):
+    vector=[]
+    items=Item.query.filter_by(tag=tag).all()
+    for item in items:
+        vector.append(item.articles[0])
+    articles=vector
+    articles.reverse()
+    return render_template('item.html',articles=articles)
 
 #上下文环境变量定义appname
 @main.context_processor

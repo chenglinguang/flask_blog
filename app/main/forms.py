@@ -14,7 +14,7 @@ class PostForm(Form):
 class ArticleForm(Form):
     title = StringField('标题', validators=[Required()])
     body = PageDownField('正文', validators=[Required()])
-    #tag  = StringField('标签',validators=[Required()])
+    tag  = StringField('标签',validators=[Required()])
     submit = SubmitField('发布文章')
 
 

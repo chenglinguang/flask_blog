@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+{% block title %}印第安酋长{% endblock %}
+
+
+
+{% block page_content %}
+{% include '_articles.html' %}
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
+{% endblock %}
+
+
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+<!--
+<div class="page-header">
+    <h1 style="text-align:center;background-color:white;color:blue;font-size:20px">印第安酋长个人技术博客</h1>
+    <p style="text-align:left;background-color:white;color:blue;font-size:10px">当前时间: </p>
+    <IMG style="text-align:center" src="static/qiuzhang.jpg">
+</div>
+-->
+{% endblock %}
+

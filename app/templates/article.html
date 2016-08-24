@@ -1,9 +1,58 @@
 {% extends "base.html" %}
-{% import "_macros.html" as macros %}
 
-{% block title %}印第安酋长- 文章{% endblock %}
-
+{% block title %}article{% endblock %}
+{% block page_image %}
+    <div class="container-fluid header">
+        <div class="row">
+            <div class="image_header col-lg-12" style="height: 400px;;background-image: url('http://img.taopic.com/uploads/allimg/120724/201991-120H413434558.jpg')">
+            </div>
+        </div>
+    <div>
+{% endblock %}
 {% block page_content %}
-{% include '_articles.html' %}
+    <ul class="articles">
+    {% for article in articles %}
+    <div class="article">
+        <div class="article_title">
+                <h4 class="article_title">{{ article.title }}</h4>
+        </div>
+
+        <div  style="margin-top: 30px;" class="article-content">
+            {% if article.body_html %}
+                {{ article.body_html | safe }}
+            {% else %}
+                {{article.body}}
+            {% endif %}
+        </div>
+        <div class="row">
+            <a class="col-lg-2 col-sm-2 col-xs-2 article_tag" href="{{ url_for('.item',tag = article.item.tag) }}">
+                <span class="label label-info">
+                {{ article.item.tag }}
+                </span>
+            </a>
+            <p class="col-lg-3 col-sm-3 col-xs-7 col-xs-offset-5 col-sm-offset-9 col-lg-offset-9 article_time">{{ moment(article.timestamp).format('YYYY-MM-DD HH:mm:ss') }} </p>
+        </div>
+
+        <hr />
+    <div class="row">
+        <div class="ds-thread col-xs-11" data-thread-key="{{ article.id }}" data-title="{{ article.title }}" data-url="/article/{{ article.id }}"></div>
+    </div>
+        <!-- 多说评论框 end power by huybery-css -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"huybery"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+    </div>
+    {% endfor %}
+</ul>
 {% endblock %}
 

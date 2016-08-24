@@ -1,17 +1,66 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 {% import "_macros.html" as macros %}
 
 {% block title %}印第安酋长{% endblock %}
 
-
-
 {% block page_content %}
-{% include '_articles.html' %}
-{% if pagination %}
-<div class="pagination">
-    {{ macros.pagination_widget(pagination, '.index') }}
+<div class="row">
+
+<div class="col-sm-8 articles">
+    {% for article in articles%}
+    <div class="article">
+        <div class="article-title">
+            <a href="{{ url_for('.article',id=article.id) }}">
+                <h5><span class="glyphicon glyphicon-link"></span>{{ article.title }}</h5>
+            </a>
+        </div>
+        <a href="{{ url_for('.article',id=article.id) }}">
+            <div class="article_body">
+                {% if article.body_html %}
+                    {{ article.body_html | safe | truncate(200,  killwords=False, end='...') }}
+                {% else %}
+                    {{ article.body | safe | truncate(300,killwords=False,end='.......') }}
+                {% endif%}
+            </div>
+        </a>
+        <div class="row">
+            <a class="col-lg-2 col-sm-2 col-xs-2 article_tag" href="{{ url_for('.item',tag = article.item.tag) }}">
+                <span class="label label-info">
+                {{ article.item.tag }}
+                </span>
+            </a>
+            <p class="col-lg-3 col-sm-3 col-xs-7 col-xs-offset-5 col-sm-offset-9 col-lg-offset-9 article_time">{{ moment(article.timestamp).format('YYYY-MM-DD HH:mm:ss') }} </p>
+        </div>
+    </div>
+    {% endfor %}
+</div><!--/.articles-->
+
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    {% block sidebar %}
+        <div class="sidebar-module sidebar-module-inset">
+            <h4>个人说明</h4>
+                <p>本网站为印第安酋长(小猛)个人博客</p>
+        </div>
+        <div class="sidebar-module">
+            <h4>友情链接</h4>
+                <ol class="list-unstyled">
+                    <li><a href="https://github.com/">GitHub</a></li>
+                    <li><a href="http://www.weiqitv.com/">围棋TV网</a></li>
+                </ol>
+        </div>
+        <div class="sidebar-module">
+            <div id="cyReping" role="cylabs" data-use="reping"></div>
+            </div>
+        {% endblock %}
+</div><!-- /.blog-sidebar -->
+
+</div><!--/.row-->
+
+<div class="col-lg-offset-5 col-sm-offset-5">
+    {{ macros.pagination_widget(pagination,'.index') }}
 </div>
-{% endif %}
+
 {% endblock %}
 
 
@@ -19,12 +68,5 @@
 {% block scripts %}
 {{ super() }}
 {{ pagedown.include_pagedown() }}
-<!--
-<div class="page-header">
-    <h1 style="text-align:center;background-color:white;color:blue;font-size:20px">印第安酋长个人技术博客</h1>
-    <p style="text-align:left;background-color:white;color:blue;font-size:10px">当前时间: </p>
-    <IMG style="text-align:center" src="static/qiuzhang.jpg">
-</div>
--->
 {% endblock %}
 
