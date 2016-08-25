@@ -1,5 +1,5 @@
 from . import main
-from flask import render_template,current_app,request,redirect,url_for,request,current_app
+from flask import render_template,current_app,request,redirect,url_for,request,current_app,flash
 from flask_login import login_required,current_user
 from ..models import User, Article,Item
 from .forms import ArticleForm
@@ -43,6 +43,24 @@ def item(tag):
     articles=vector
     articles.reverse()
     return render_template('item.html',articles=articles)
+
+@main.route('/edit/<int:id>',methods=['GET','POST'])
+def edit(id):
+    article=Article.query.get_or_404(id)
+    form=ArticleForm()
+    if form.validate_on_submit(): 
+        article.title=form.title.data
+        article.body=form.body.data
+        article.item.tag=form.tag.data
+        db.session.add(article)
+        db.session.commit()
+        flash('主人,文章已修改完毕')
+        return redirect(url_for('.article',id=article.id))
+    form.body.data=article.body
+    form.title.data=article.title
+    form.tag.data=article.item.tag
+    return render_template('edit_article.html',form=form) 
+
 
 #上下文环境变量定义appname
 @main.context_processor

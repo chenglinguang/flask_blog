@@ -4,15 +4,15 @@
 
 {% block title %}印第安酋长{% endblock %}
 
+
 {% block page_content %}
 <div class="row">
-
 <div class="col-sm-8 articles">
     {% for article in articles%}
     <div class="article">
         <div class="article-title">
             <a href="{{ url_for('.article',id=article.id) }}">
-                <h5><span class="glyphicon glyphicon-link"></span>{{ article.title }}</h5>
+                <h5><!--<span class="glyphicon glyphicon-link"></span>-->{{ article.title }}</h5>
             </a>
         </div>
         <a href="{{ url_for('.article',id=article.id) }}">
@@ -25,12 +25,17 @@
             </div>
         </a>
         <div class="row">
-            <a class="col-lg-2 col-sm-2 col-xs-2 article_tag" href="{{ url_for('.item',tag = article.item.tag) }}">
+            <a class="article_tag" href="{{ url_for('.item',tag = article.item.tag) }}">
                 <span class="label label-info">
                 {{ article.item.tag }}
                 </span>
             </a>
-            <p class="col-lg-3 col-sm-3 col-xs-7 col-xs-offset-5 col-sm-offset-9 col-lg-offset-9 article_time">{{ moment(article.timestamp).format('YYYY-MM-DD HH:mm:ss') }} </p>
+            {% if current_user.is_authenticated %}
+                <a href="{{url_for('.edit',id=article.id)}}">
+                    <span class="label label-primary">编辑</span>
+                </a>
+            {% endif %}
+            <p class="article_time">{{ moment(article.timestamp).format('YYYY-MM-DD HH:mm:ss') }} </p>
         </div>
     </div>
     {% endfor %}
@@ -43,10 +48,11 @@
                 <p>本网站为印第安酋长(小猛)个人博客</p>
         </div>
         <div class="sidebar-module">
-            <h4>友情链接</h4>
+            <h4>相关链接</h4>
                 <ol class="list-unstyled">
                     <li><a href="https://github.com/">GitHub</a></li>
-                    <li><a href="http://www.weiqitv.com/">围棋TV网</a></li>
+                    <li><a href="http://www.lnts.com.cn/">鲁能泰山官方网站</a></li>
+                    <li><a href="http://www.zhibo8.cc/index.html">直播8</a></li>
                 </ol>
         </div>
         <div class="sidebar-module">

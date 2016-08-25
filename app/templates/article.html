@@ -13,11 +13,11 @@
     <ul class="articles">
     {% for article in articles %}
     <div class="article">
-        <div class="article_title">
-                <h4 class="article_title">{{ article.title }}</h4>
+        <div class="article-title">
+                <h4 class="article-title">{{ article.title }}</h4>
         </div>
 
-        <div  style="margin-top: 30px;" class="article-content">
+        <div  style="margin-top: 30px;" class="article_body">
             {% if article.body_html %}
                 {{ article.body_html | safe }}
             {% else %}
@@ -25,11 +25,16 @@
             {% endif %}
         </div>
         <div class="row">
-            <a class="col-lg-2 col-sm-2 col-xs-2 article_tag" href="{{ url_for('.item',tag = article.item.tag) }}">
+            <a class="article_tag" href="{{ url_for('.item',tag = article.item.tag) }}">
                 <span class="label label-info">
                 {{ article.item.tag }}
                 </span>
             </a>
+            {% if current_user.is_authenticated %}
+                <a href="{{url_for('.edit',id=article.id)}}">
+                    <span class="label label-primary">编辑</span>
+                </a>
+            {% endif %}
             <p class="col-lg-3 col-sm-3 col-xs-7 col-xs-offset-5 col-sm-offset-9 col-lg-offset-9 article_time">{{ moment(article.timestamp).format('YYYY-MM-DD HH:mm:ss') }} </p>
         </div>
 
