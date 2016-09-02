@@ -1,8 +1,10 @@
+import os
+from werkzeug import secure_filename
 from . import main
 from flask import render_template,current_app,request,redirect,url_for,request,current_app,flash
 from flask_login import login_required,current_user
 from ..models import User, Article,Item
-from .forms import ArticleForm
+from .forms import ArticleForm,UploadForm
 import time 
 from .. import db
 
@@ -61,6 +63,38 @@ def edit(id):
     form.tag.data=article.item.tag
     return render_template('edit_article.html',form=form) 
 
+# 设置允许上传的文件类型
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg'])
+UPLOAD_FOLDER = './uploads'
+#检查文件类型是否合法
+def allowed_file(filename):
+    # 判断文件的扩展名是否在配置项ALLOWED_EXTENSIONS中
+    return '.' in filename and filename.rsplit('.',1)[1] in ALLOWED_EXTENSIONS
+
+def GetFileList(dir,fileList):
+    newDir=dir
+    if os.path.isfile(dir):
+        fileList.append(dir)
+    elif os.path.isdir(dir):
+        for s in os.listdir(dir):
+            newDir=os.path.join(dir,s)
+            GetFileList(newDir, fileList)
+    return fileList
+
+@main.route('/upload',methods=['GET','POST'])
+def upload():
+    form=UploadForm()
+    if form.validate_on_submit():
+        filename = secure_filename(form.file.data.filename)
+        if filename and allowed_file(filename):
+            form.file.data.save('uploads/'+filename)
+            return "上传成功"
+        else:
+            return "上传失败"
+    else:
+        filelist=GetFileList('uploads/', [])
+        return render_template('upload.html',form=form,filelist=filelist)
+    
 
 #上下文环境变量定义appname
 @main.context_processor
