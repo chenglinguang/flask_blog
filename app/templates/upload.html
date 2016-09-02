@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}上传文件{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>已经上传的文件</h1>
+    {% for file in filelist%}
+        <div class="files">
+             {{file}}
+        </div>
+    {% endfor %}
+</div>
+<hr/>
+<div class="page-header">
+    <h1>主人，您想上传点啥？</h1>
+</div>
+<div class="col-md-10">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}
+
