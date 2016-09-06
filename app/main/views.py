@@ -95,6 +95,13 @@ def upload():
         filelist=GetFileList('uploads/', [])
         return render_template('upload.html',form=form,filelist=filelist)
     
+@main.route('/delete/<int:id>',methods=['GET','POST'])
+def delete(id):
+    article=Article.query.get_or_404(id)   
+    db.session.delete(article)
+    db.session.commit()
+    flash('删除成功')
+    return redirect(url_for('.index'))
 
 #上下文环境变量定义appname
 @main.context_processor
