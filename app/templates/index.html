@@ -34,6 +34,9 @@
                 <a href="{{url_for('.edit',id=article.id)}}">
                     <span class="label label-primary">编辑</span>
                 </a>
+                <a href="#" onclick="confirmDelete('{{ article.id }}')">
+                    <span class="label label-primary">删除</span>
+                </a>
             {% endif %}
             <p class="article_time">{{ moment(article.timestamp).format('YYYY-MM-DD HH:mm:ss') }} </p>
         </div>

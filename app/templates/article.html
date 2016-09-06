@@ -34,6 +34,9 @@
                 <a href="{{url_for('.edit',id=article.id)}}">
                     <span class="label label-primary">编辑</span>
                 </a>
+                <a href="#" onclick="confirmDelete('{{ article.id }}')">
+                    <span class="label label-primary">删除</span>
+                </a>
             {% endif %}
             <p class="col-lg-3 col-sm-3 col-xs-7 col-xs-offset-5 col-sm-offset-9 col-lg-offset-9 article_time">{{ moment(article.timestamp).format('YYYY-MM-DD HH:mm:ss') }} </p>
         </div>
@@ -42,19 +45,7 @@
     <div class="row">
         <div class="ds-thread col-xs-11" data-thread-key="{{ article.id }}" data-title="{{ article.title }}" data-url="/article/{{ article.id }}"></div>
     </div>
-        <!-- 多说评论框 end power by huybery-css -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"huybery"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0]
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
+</script>
 <!-- 多说公共JS代码 end -->
     </div>
     {% endfor %}

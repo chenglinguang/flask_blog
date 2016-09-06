@@ -76,3 +76,15 @@
 </footer>
 {% endblock %}
 
+{% block scripts %}
+    {{ super() }}
+    <script src="//cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js"></script>
+    <script>
+        var $SCRIPT_ROOT = {{request.script_root|tojson|safe}};
+    </script>
+    <script src="{{ url_for('static', filename='article.js') }}"></script>
+{% endblock %}
+
+
+
+
