@@ -5,18 +5,21 @@
 {% block page_content %}
 <div class="page-header">
     <h1>已经上传的文件</h1>
-    {% for file in filelist%}
-        <div class="files">
-             {{file}}
-        </div>
+    {% for filename in filelist%}
+        <a href="{{ url_for('.download',filename=filename) }}">
+            {{filename}}
+        </a>
+        <br/>
     {% endfor %}
 </div>
 <hr/>
+{% if current_user.is_authenticated %}
 <div class="page-header">
     <h1>主人，您想上传点啥？</h1>
 </div>
 <div class="col-md-10">
     {{ wtf.quick_form(form) }}
 </div>
+{% endif %}
 {% endblock %}
 

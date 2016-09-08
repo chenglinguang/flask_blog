@@ -1,7 +1,7 @@
 import os
 from werkzeug import secure_filename
 from . import main
-from flask import render_template,current_app,request,redirect,url_for,request,current_app,flash
+from flask import render_template,current_app,request,redirect,url_for,request,current_app,flash,send_from_directory
 from flask_login import login_required,current_user
 from ..models import User, Article,Item
 from .forms import ArticleForm,UploadForm
@@ -64,7 +64,7 @@ def edit(id):
     return render_template('edit_article.html',form=form) 
 
 # 设置允许上传的文件类型
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg','tar','tar.gz'])
 UPLOAD_FOLDER = './uploads'
 #检查文件类型是否合法
 def allowed_file(filename):
@@ -74,7 +74,9 @@ def allowed_file(filename):
 def GetFileList(dir,fileList):
     newDir=dir
     if os.path.isfile(dir):
-        fileList.append(dir)
+        file=dir.replace('app/uploads/','')
+        print(file)
+        fileList.append(file)
     elif os.path.isdir(dir):
         for s in os.listdir(dir):
             newDir=os.path.join(dir,s)
@@ -87,14 +89,19 @@ def upload():
     if form.validate_on_submit():
         filename = secure_filename(form.file.data.filename)
         if filename and allowed_file(filename):
-            form.file.data.save('uploads/'+filename)
+            form.file.data.save('app/uploads/'+filename)
             return "上传成功"
         else:
             return "上传失败"
     else:
-        filelist=GetFileList('uploads/', [])
+        filelist=GetFileList('app/uploads/', [])
         return render_template('upload.html',form=form,filelist=filelist)
-    
+
+@main.route('/download/<path:filename>',methods=['GET','POST'])
+def download(filename):
+    return send_from_directory('uploads/',filename, as_attachment=True)
+   
+ 
 @main.route('/delete/<int:id>',methods=['GET','POST'])
 def delete(id):
     article=Article.query.get_or_404(id)   
